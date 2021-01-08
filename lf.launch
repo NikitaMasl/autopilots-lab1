@@ -1,0 +1,26 @@
+<launch>
+    <arg name="turtle1_name" default="turtle1"/>
+    <arg name="turtle2_name" default="turtle2"/>
+    <node pkg="turtlesim"
+          type="turtlesim_node"
+          name="turtlesim"
+          output="screen">
+        <remap from="/turtle1/pose" to="$(arg turtle1_name)/pose"/>
+    </node>
+    <node pkg="turtles"
+          type="spawner.py"
+          name="spawner"
+          output="screen"/>
+    <node pkg="turtlesim"
+          type="turtle_teleop_key"
+          name="turtle_teleop"
+          output="screen"/>
+    <node pkg="turtles"
+          type="follower.py"
+          name="follower"
+          output="screen">
+        <remap from="/turtle1/pose" to="$(arg turtle1_name)/pose"/>
+        <remap from="/turtle2/pose" to="$(arg turtle2_name)/pose"/>
+        <remap from="/turtle2/cmd_vel" to="$(arg turtle2_name)/cmd_vel"/>
+    </node>
+</launch>
